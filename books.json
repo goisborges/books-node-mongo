@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "Harry Potter",
+        "author": "J.K. Rowling"
+    },
+    {
+        "id": 3,
+        "name": "The Secret",
+        "author": "Rondha Byrne"
+    },
+    {
+        "id": 4,
+        "name": "Goonies",
+        "author": "Peter Jordan"
+    },
+    {
+        "id": 5,
+        "name": "Rebel",
+        "author": "Rivalry"
+    }
+]
