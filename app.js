@@ -3,8 +3,7 @@ import Express from 'express';
 import fs from 'fs';
 import dbConnect from './config/dbConnect.js';
 import booksMongo from "./models/Book.js";
-import dotenv from 'dotenv';
-dotenv.config();
+import routes from './routes/index.js'
 
 
 dbConnect.on('error', console.error.bind(console, 'connection error:'));
@@ -20,13 +19,10 @@ const booksFromJson = fs.readFileSync('books.json');
 const booksJson = JSON.parse(booksFromJson);
 console.log(booksJson);
 
+
 app.use(Express.json())
 
-//set a route / GET
-app.get('/', (req, res) => {
-    res.send('Hello World');
-}
-);
+routes(app);
 
 app.get('/books', (req, res) => {
     res.json(booksJson);
@@ -125,22 +121,15 @@ app.delete('/books/:id', (req, res) => {
 }
 );
 
+//----------------------------------------------------------------
 //methods for MongoDB
-//get all books
-app.get('/booksmongo', async (req, res) => {
-    const books = await booksMongo.find({});
-    await res.send(books);
-}
-);
 
-//add a book
-app.post('/booksmongo', async (req, res) => {
-    const book = new booksMongo(req.body);
-    await book.save();
+//get a book
+app.get('/booksmongo/:id', async (req, res) => {
+    const book = await booksMongo.findById(req.params.id);
     await res.send(book);
 }
 );
-
 
 
 
