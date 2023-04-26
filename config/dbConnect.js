@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+
+
+console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+console.log(process.env.MONGODBPASS)
 
 //books-node is the name of the collection
-mongoose.connect('mongodb+srv://goisborges:MongoM%40rcos81@cluster0.ughnlpf.mongodb.net/books-node');
+mongoose.connect(`mongodb+srv://${process.env.MONGODBUSER}:${process.env.MONGODBPASS}@cluster0.ughnlpf.mongodb.net/books-node`);
 
 let db = mongoose.connection;
 

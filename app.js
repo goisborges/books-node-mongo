@@ -1,9 +1,10 @@
 
 import Express from 'express';
 import fs from 'fs';
-import dbConnect  from './config/dbConnect.js';
+import dbConnect from './config/dbConnect.js';
 import booksMongo from "./models/Book.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 dbConnect.on('error', console.error.bind(console, 'connection error:'));
@@ -44,8 +45,8 @@ app.post('/books', (req, res, next) => {
     }
     else {
         booksJson.push(req.body);
-        console.log(books);
         
+
         //write the req.body to the file books.json
 
         fs.writeFileSync('books.json', JSON.stringify(booksJson));
@@ -61,7 +62,7 @@ app.post('/books', (req, res, next) => {
 app.put('/books/:id', (req, res) => {
     let index = searchBookIndex(req.params.id);
 
-    if (index !== -1){
+    if (index !== -1) {
         booksJson[index].name = req.body.name;
         booksJson[index].author = req.body.author;
 
@@ -71,9 +72,9 @@ app.put('/books/:id', (req, res) => {
     }
     else {
         res.send("Book not found");
-    
+
     }
-    
+
 }
 );
 
@@ -94,14 +95,14 @@ function searchBookIndex(id) {
 app.get('/books/:id', (req, res) => {
     let index = searchBookIndex(req.params.id);
 
-    if (index !== -1){
+    if (index !== -1) {
         res.json(booksJson[index]);
     }
     else {
         res.send("Book not found");
-    
+
     }
-    
+
 }
 );
 
@@ -109,7 +110,7 @@ app.get('/books/:id', (req, res) => {
 app.delete('/books/:id', (req, res) => {
     let index = searchBookIndex(req.params.id);
 
-    if (index !== -1){
+    if (index !== -1) {
         booksJson.splice(index, 1);
 
         fs.writeFileSync('books.json', JSON.stringify(booksJson));
@@ -118,18 +119,30 @@ app.delete('/books/:id', (req, res) => {
     }
     else {
         res.send("Book not found");
-    
+
     }
-    
+
 }
 );
 
 //methods for MongoDB
+//get all books
 app.get('/booksmongo', async (req, res) => {
     const books = await booksMongo.find({});
     await res.send(books);
 }
 );
+
+//add a book
+app.post('/booksmongo', async (req, res) => {
+    const book = new booksMongo(req.body);
+    await book.save();
+    await res.send(book);
+}
+);
+
+
+
 
 
 export default app;
