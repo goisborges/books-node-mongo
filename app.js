@@ -121,16 +121,6 @@ app.delete('/books/:id', (req, res) => {
 }
 );
 
-//----------------------------------------------------------------
-//methods for MongoDB
-
-//get a book
-app.get('/booksmongo/:id', async (req, res) => {
-    const book = await booksMongo.findById(req.params.id);
-    await res.send(book);
-}
-);
-
 
 
 
